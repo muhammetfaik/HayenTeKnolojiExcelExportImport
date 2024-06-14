@@ -13,6 +13,10 @@ namespace HayenTeKnolojiExcelExportImport.Controllers
         private readonly ILogger<HomeController> _logger;
         private IWebHostEnvironment _webHostEnvironment;
         private readonly ICustomer _customer;
+        List<Customer> customers = new List<Customer>();
+        SqlCommand com = new SqlCommand();
+        SqlDataReader dr;
+        SqlConnection con = new SqlConnection();
 
         public HomeController(ILogger<HomeController> logger,IWebHostEnvironment  webHostEnvironment,ICustomer customer)
         {
@@ -29,6 +33,7 @@ namespace HayenTeKnolojiExcelExportImport.Controllers
         [HttpPost]
         public IActionResult Index(IFormFile formFile)
         {
+            _logger.LogInformation("This is upload file");
             string path = _customer.DocumentUpload(formFile);
             DataTable dt = _customer.CustomerDataTable(path);
             _customer.ImportCustomer(dt);
@@ -51,6 +56,7 @@ namespace HayenTeKnolojiExcelExportImport.Controllers
         {
             using (var workbook = new XLWorkbook())
             {
+                _logger.LogInformation("Export Excel Started");
                 var ws = workbook.Worksheets.Add("Student");
                 ws.Range("A2:E2").Merge();
                 ws.Cell(1,1).Value = "Report";
@@ -116,5 +122,38 @@ namespace HayenTeKnolojiExcelExportImport.Controllers
             }
             
         }
+
+        //Gösterim için bir kod.Sonra anlatýlacak.
+        /*
+        private void FetchData()
+        {
+            if(customers.Count > 0)
+            {
+                customers.Clear();
+            }
+            try
+            {
+                con.Open();
+                com.Connection = con;
+                com.CommandText = "SELECT * FROM dbo.Customers";
+                dr = com.ExecuteReader();
+                while(dr.Read())
+                {
+                    customers.Add(new Customer() { id = Convert.ToInt32(dr["id"]),
+                        firstName = dr["firstName"].ToString(),
+                        lastName = dr["lastName"].ToString(),
+                        job = dr["job"].ToString(),
+                        amount = Convert.ToSingle(dr["amount"]),
+                        tdate = Convert.ToDateTime(dr["tdate"] });
+
+
+                }
+
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }*/
     }
 }

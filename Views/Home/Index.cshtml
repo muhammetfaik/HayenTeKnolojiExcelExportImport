@@ -2,12 +2,13 @@
     ViewData["Title"] = "Home Page";
 }
 
-<a asp-action="ExportExcel" asp-controller="Home">Export Excel</a>
+<a asp-action="Download" asp-controller="Product">Export Excel</a>
 <a asp-action="Sqlconnectioncontrol" asp-controller="Home">Sql Connection Control</a>
+<a asp-action="createdata" asp-controller="Product">Create Data</a>
 
 <div class="row">
     <div class="col-5">
-        <form method="post" enctype="multipart/form-data" asp-controller="Home" asp-action="Index">
+        <form method="post" enctype="multipart/form-data" asp-controller="Product" asp-action="Upload">
             <div class="form-group">
                 <div class="col-md-10">
                     <h3>Upload File</h3>

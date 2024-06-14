@@ -2,7 +2,6 @@ using HayenTeKnolojiExcelExportImport.Models;
 using HayenTeKnolojiExcelExportImport.Repository;
 using Microsoft.EntityFrameworkCore;
 
-
 namespace HayenTeKnolojiExcelExportImport
 {
     public class Program
@@ -10,11 +9,13 @@ namespace HayenTeKnolojiExcelExportImport
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<CustDBContext>(conn => conn.UseSqlServer(builder.Configuration.GetConnectionString("sqlconnection")));
             builder.Services.AddScoped<ICustomer, CustomerDetail>();
+            builder.Services.AddDbContext<DataContext>(conn => conn.UseSqlServer(builder.Configuration.GetConnectionString("sqlconnection")));
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
